@@ -15,14 +15,8 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            page: 1,
-            data: {
-                name: "Pompki",
-                break: 10,
-                series: [
-                    5,4,3,6
-                ]
-            }
+            page: 0,
+            data: {}
         };
     }
 
