@@ -6,8 +6,7 @@ import Training from './components/training';
 const styles = StyleSheet.create({
     view: {
         backgroundColor: '#333',
-        flex: 1,
-        padding: 25
+        flex: 1
     }
   });
 
@@ -28,7 +27,7 @@ export default class App extends React.Component {
             content = (<Configure onConfigure={ this.startTraining }/>);
         }
         if(this.state.page === 1) {
-            content = <Training data={ this.state.data }/>
+            content = <Training data={ this.state.data } finishTraining={ this.finishTraining }/>
         }
 
         return (
@@ -42,6 +41,12 @@ export default class App extends React.Component {
         this.setState({
             page: 1,
             data: data
+        });
+    }
+
+    finishTraining = () => {
+        this.setState({
+            page: 0
         });
     }
 }

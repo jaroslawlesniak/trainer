@@ -1,21 +1,57 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
+    container: {
+        marginTop: 15,
+        flex: 1,
+        display: "flex",
+        alignItems: "stretch",
+        flexDirection: "column",
+        justifyContent: "space-between"
+    },
+    view: {
+        display: "flex",
+        flex: 2,
+        justifyContent: "flex-start",
+        padding: 10
+    },
+    button: {
+        justifyContent: "flex-end",
+        padding: 0
+    },
     header: {
-        fontSize: 30,
         color: "#fff",
-        marginTop: 50,
-        marginBottom: 25
+        fontSize: 25,
+        marginBottom: 15
     },
     text: {
-        color: "#fff"
+        color: "#eee"
     },
-    serie: {
-        color: "#FFBD1B",
-        fontSize: 40,
+    submit_button: {
+        backgroundColor: "#FFBD1B",
+        color: "#fff",
+        padding: 20,
+        textAlign: "center"
+    },
+    name: {
+        color: "#fff",
+        fontSize: 25,
+        marginBottom: 15,
+        textAlign: "center"
+    },
+    current_serie: {
+        fontSize: 18,
+        color: "#bbb",
+        textAlign: "center"
+    },
+    counter: {
         textAlign: "center",
-        marginBottom: 25
+        fontSize: 50,
+        color: "#FFBD1B"
+    },
+    center: {
+        justifyContent: "center"
     }
 });
 
@@ -40,12 +76,18 @@ class Training extends React.Component {
 
         if(this.state.level === 0) {
             content = 
-            (<View>
-                <Text style={ styles.header }>Podsumowanie</Text>
-                <Text style={ styles.text }>Ćwiczenie: {this.state.name}</Text>
-                <Text style={ styles.text }>Czas pomiędzy seriami: {this.state.break}</Text>
-                <Text style={ styles.text }>Serie: {this.state.series.join(", ")}</Text>
-                <Button title="Rozpocznij trening" onPress={() => this.startTraining() }/>
+            (<View style={styles.container}>
+                <View style={styles.view}>
+                    <Text style={ styles.header }>Podsumowanie</Text>
+                    <Text style={ styles.text }>Ćwiczenie: {this.state.name}</Text>
+                    <Text style={ styles.text }>Czas pomiędzy seriami: {this.state.break}</Text>
+                    <Text style={ styles.text }>Powtórzenia: {this.state.series.join(", ")}</Text>
+                </View>
+                <View style={[styles.view, styles.button]}>
+                    <TouchableOpacity onPress={() => { this.startTraining() }}> 
+                        <Text style={ styles.submit_button }>Rozpocznij trening</Text>
+                    </TouchableOpacity>
+                </View>
             </View>);
         }
 
@@ -53,33 +95,51 @@ class Training extends React.Component {
             if(this.state.level > 0) {
                 if(this.state.level%2 === 0) {
                     content = (
-                        <View>
-                            <Text style={ styles.header }>Przerwa</Text>
-                            <Text style={ styles.serie }>{this.state.break_time}</Text>
+                        <View style={styles.container}>
+                            <View style={[styles.view, styles.center]}>
+                                <Text style={ styles.name }>Przerwa</Text>
+                                <Text style={ styles.counter }>{this.state.break_time}</Text>
+                            </View>    
                         </View>
                     );
                 } else {
                     content = (
-                        <View>
-                            <Text style={styles.header}>Seria {this.state.serie + 1}/{this.state.series.length}</Text>
-                            <Text style={styles.serie}>{this.state.series[this.state.serie]}</Text>
-                            <Button title="Zakończ serię" onPress={ () => { this.startBreak() }}/>
+                        <View style={styles.container}>
+                            <View style={styles.view}>
+                                <Text style={styles.name}>{this.state.name}</Text>
+                                <Text style={styles.current_serie}>{this.state.serie + 1}/{this.state.series.length}</Text>
+                            </View>
+                            <View style={styles.view}>
+                                <Text style={styles.counter}>{this.state.series[this.state.serie]}</Text>
+                            </View>
+                            <View style={[styles.view, styles.button]}>
+                                <TouchableOpacity onPress={() => { this.startBreak() }}> 
+                                    <Text style={ styles.submit_button }>Zakończ serię</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     );
                 }
             }
         } else {
             content = (
-            <View>
-                <Text style={styles.header}>Zakończono trening</Text>
-                <Text style={styles.text}>{this.state.completed} powtórzeń</Text>
+            <View style={styles.container}>
+                <View style={styles.view}>
+                    <Text style={styles.name}>Zakończono trening</Text>
+                    <Text style={styles.current_serie}>{this.state.completed} powtórzeń</Text>
+                </View>
+                <View style={[styles.view, styles.button]}>
+                    <TouchableOpacity onPress={() => { this.props.finishTraining() }}> 
+                        <Text style={ styles.submit_button }>Nowy trening</Text>
+                    </TouchableOpacity>
+                </View>
             </View>);
         }
 
         return (
-            <View>
+            <View style={styles.container}>
                 { content }
-            </View>  
+            </View>
         );
     }
 
