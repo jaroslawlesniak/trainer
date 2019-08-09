@@ -6,7 +6,8 @@ import Training from './components/training';
 const styles = StyleSheet.create({
     view: {
         backgroundColor: '#333',
-        flex: 1
+        flex: 1,
+        padding: 25
     }
   });
 

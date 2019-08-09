@@ -15,7 +15,13 @@ const styles = StyleSheet.create({
         color: "#fff"
     },
     button: {
-        padding: 0
+        padding: 0,
+        shadowOffset: {
+            height: 0,
+            width: 0
+        },
+        shadowOpacity: 0,
+        elevation: 0
     },
     input: {
         backgroundColor: "#fff",
@@ -63,7 +69,7 @@ class Configure extends React.Component {
                 <View style={{ alignContent: "flex-end"}}>
                     <Text style={[ styles.text, styles.header ]}>{ content }</Text>
                     <TextInput style={[styles.text, styles.input ]} value={this.state.text} onChangeText={(text) => this.setState({text})}/>
-                    <Button title="Ustaw" style={[styles.text, styles.button ]} onPress={() => { this.nextLevel() }} color="#FFBD1B"/>
+                    <Button title="Ustaw" style={[styles.text, styles.button ]} onPress={() => { this.nextLevel() }} color="#333"/>
                 </View>
             </View>
         );
