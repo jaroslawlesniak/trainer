@@ -49,9 +49,10 @@ export default class App extends React.Component {
             <View style={styles.container}>
                 <ToolbarAndroid 
                     style={styles.toolbar} 
-                    title='Ćwiczenia'
+                    title='Dzisiaj'
                     actions={[
-                        {title: 'Zarządzaj treningami', iconName: 'md-cog', show: 'never'}
+                        {title: 'Zarządzaj ćwiczeniami', iconName: 'md-cog', show: 'never'},
+                        {title: 'Dodaj ćwiczenie', iconName: 'md-cog', show: 'never'}
                     ]}/>
                 {content}
             </View>
