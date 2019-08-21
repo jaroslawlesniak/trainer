@@ -1,20 +1,31 @@
 import React from 'react';
 import { View, ToolbarAndroid, StyleSheet, StatusBar } from 'react-native';
 import Page from './libs/page';
-import { Ionicons } from '@expo/vector-icons';
+
+import { createDrawerNavigator, createAppContainer } from 'react-navigation';
 
 import Homepage from './components/homepage';
+import Configure from './components/configure';
+import NavigationComponent from './components/navigation';
+import Activities from './components/activities';
 
 const styles = StyleSheet.create({
-    toolbar: {
-        height: 55,
-        backgroundColor: '#fff'
-    },
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#f2f2f2',
         flex: 1
     }
 });
+
+const AppDrawerNavigator = createDrawerNavigator(
+    {
+        Homepage,
+        Activities
+    },{
+        contentComponent: NavigationComponent
+    }
+    );
+
+const AppContainer = createAppContainer(AppDrawerNavigator);
 
 export default class App extends React.Component {
     constructor(props) {
@@ -28,7 +39,7 @@ export default class App extends React.Component {
             data: {}
         };
     }
-
+ 
     render() {
         let content;
 
@@ -46,16 +57,7 @@ export default class App extends React.Component {
         // }
 
         return (
-            <View style={styles.container}>
-                <ToolbarAndroid 
-                    style={styles.toolbar} 
-                    title='Dzisiaj'
-                    actions={[
-                        {title: 'Zarządzaj ćwiczeniami', iconName: 'md-cog', show: 'never'},
-                        {title: 'Dodaj ćwiczenie', iconName: 'md-cog', show: 'never'}
-                    ]}/>
-                {content}
-            </View>
+            <AppContainer/>
         );
     }
 

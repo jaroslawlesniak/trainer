@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, AsyncStorage, StyleSheet } from 'react-native';
-import { FontAwesome  } from '@expo/vector-icons';
+import { View, Text, AsyncStorage, StyleSheet, ToolbarAndroid } from 'react-native';
+import { FontAwesome, Ionicons  } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     iconInfo: {
@@ -31,6 +31,11 @@ const styles = StyleSheet.create({
 });
 
 export default class Homepage extends React.Component {
+    static navigationOptions = {
+        title: "Dzisiejsze ćwiczenia",
+        drawerIcon: (<Ionicons name='md-calendar' size={18}/>)
+    }
+
     constructor(props) {
         super(props);
 
@@ -83,6 +88,7 @@ export default class Homepage extends React.Component {
 
         return (
             <View>
+                <ToolbarAndroid color="#fff" title="Dzisiejsze ćwiczenia" style={{ height: 55 }}/>
                 {content}
             </View>
         );
