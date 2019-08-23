@@ -40,16 +40,8 @@ export default class Homepage extends React.Component {
         super(props);
 
         this.state = {
-            activities: [
-                {title: 'Pompki', days: [0,1,2,3,4,5,6], finished: false},
-                {title: 'Podciąganie', days: [0,1,2,3,4,5,6], finished: true},
-                {title: 'Hantle', days: [0,1,2,3,4,5,6], finished: false},
-            ]
+            activities: []
         }
-
-        // this.state = {
-        //     activities: []
-        // }
 
         this.loadActivitiesFromLocalStorage();
     }
