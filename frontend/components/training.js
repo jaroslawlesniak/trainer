@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -56,20 +56,24 @@ const styles = StyleSheet.create({
 });
 
 class Training extends React.Component {
+    timer;
+
     constructor(props) {
         super(props);
 
-        let training = this.props.navigation.getParam('data');
+        StatusBar.setBackgroundColor('#f2f2f2');
+        StatusBar.setBarStyle('dark-content');
 
         this.state = {
-            name: training.title,
-            break: training.break_time,
-            series: training.series,
+            name: this.props.data.title,
+            break: this.props.data.break_time,
+            series: this.props.data.series,
             level: 0,
             break_time: 0,
             serie: 0,
             finished: false,
-            completed: training.series.reduce((prev, next) => prev + next)
+            completed: this.props.data.series.reduce((prev, next) => prev + next),
+            key: this.props.activity_key
         };    
     }
 
@@ -131,8 +135,8 @@ class Training extends React.Component {
                     <Text style={styles.current_serie}>{this.state.completed} powtórzeń</Text>
                 </View>
                 <View style={[styles.view, styles.button]}>
-                    <TouchableOpacity onPress={() => { this.props.finishTraining() }}> 
-                        <Text style={ styles.submit_button }>Nowy trening</Text>
+                    <TouchableOpacity onPress={() => { this.props.finishTraining(this.state.key) }}> 
+                        <Text style={ styles.submit_button }>Zakończ trening</Text>
                     </TouchableOpacity>
                 </View>
             </View>);
@@ -168,7 +172,7 @@ class Training extends React.Component {
     }
 
     countDownTimer() {
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
             if(this.state.break_time > 0) {
                 this.setState({
                     break_time: this.state.break_time - 1
@@ -180,6 +184,10 @@ class Training extends React.Component {
                 });
             }
         }, 1000);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timer);
     }
 }
 

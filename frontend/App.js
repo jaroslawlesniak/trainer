@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
 const AppDrawerNavigator = createDrawerNavigator(
     {
         Homepage,
-        Activities,
-        Training
+        Activities
     },{
         contentComponent: NavigationComponent
     }
