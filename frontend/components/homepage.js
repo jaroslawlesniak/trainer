@@ -59,12 +59,19 @@ export default class Homepage extends React.Component {
                 </View>
             );
         } else {
+
+            let date = new Date();
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            const current_date = `${day}/${month}/${year}`;
+
             content = this.state.activities.map((activity, key) => {
-                if(activity.finished === false) {
+                if(activity.last_complete_day !== current_date) {
                     return (
                         <View key={key} style={styles.container}>
                             <Text style={styles.activity}>{activity.title}</Text>
-                            <FontAwesome name='angle-right' size={20} color='#000'/>
+                            <FontAwesome style={{backgroundColor: '#f2f2f2', padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} name='angle-right' size={20} color='#000' onPress={() => {this.props.navigation.navigate('Training', { data: activity })}}/>
                         </View>
                     );
                 } else {

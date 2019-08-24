@@ -8,6 +8,7 @@ import Homepage from './components/homepage';
 import Configure from './components/configure';
 import NavigationComponent from './components/navigation';
 import Activities from './components/activities';
+import Training from './components/training';
 
 const styles = StyleSheet.create({
     container: {
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
 const AppDrawerNavigator = createDrawerNavigator(
     {
         Homepage,
-        Activities
+        Activities,
+        Training
     },{
         contentComponent: NavigationComponent
     }

@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
         padding: 0
     },
     header: {
-        color: "#fff",
+        color: "#333",
         fontSize: 25,
         marginBottom: 15
     },
     text: {
-        color: "#eee"
+        color: "#666"
     },
     submit_button: {
         backgroundColor: "#FFBD1B",
@@ -58,17 +58,19 @@ const styles = StyleSheet.create({
 class Training extends React.Component {
     constructor(props) {
         super(props);
-        
+
+        let training = this.props.navigation.getParam('data');
+
         this.state = {
-            name: this.props.data.name,
-            break: this.props.data.break,
-            series: this.props.data.series,
+            name: training.title,
+            break: training.break_time,
+            series: training.series,
             level: 0,
             break_time: 0,
             serie: 0,
             finished: false,
-            completed: this.props.data.series.reduce((a, b) => a + b, 0)
-        }
+            completed: training.series.reduce((prev, next) => prev + next)
+        };    
     }
 
     render() {

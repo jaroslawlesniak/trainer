@@ -113,8 +113,6 @@ export default class Activities extends React.Component {
             this.setState({
                 activities: JSON.parse(activities)
             }); 
-        } else {
-
         }
     }
 
@@ -171,7 +169,8 @@ export default class Activities extends React.Component {
             title: this.state.new_activity.title,
             break_time: this.state.new_activity.break_time,
             days: this.state.new_activity.days,
-            series: this.state.new_activity.series
+            series: this.state.new_activity.series,
+            last_complete_day: ''
         }
 
         let newActivities = this.state.activities;
