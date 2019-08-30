@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     name: {
-        color: "#fff",
+        color: "#333",
         fontSize: 25,
         marginBottom: 15,
         textAlign: "center"

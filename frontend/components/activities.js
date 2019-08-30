@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 
 export default class Activities extends React.Component {
     static navigationOptions = {
-        title: "Zarządzaj ćwiczeniami",
+        title: "Ćwiczenia",
         drawerIcon: (<MaterialCommunityIcons name='dumbbell' size={18}/>)
     }
 
@@ -36,6 +36,8 @@ export default class Activities extends React.Component {
         this.state = {
             activities: [],
             page: Page.ACTIVITIES,
+            is_modyfied: false,
+            modyfied_id: 0,
             new_activity: {
                 title: '',
                 break_time: 0,
@@ -43,10 +45,6 @@ export default class Activities extends React.Component {
                 series: [0]
             }
         }
-
-        // this.state = {
-        //     activities: []
-        // }
 
         this.loadActivitiesFromLocalStorage();
     }
@@ -59,7 +57,8 @@ export default class Activities extends React.Component {
                 content = this.state.activities.map((activity, key) => (
                     <View key={key} style={styles.item}>
                         <Text style={{ fontSize: 20, color: '#666' }}>{activity.title}</Text>
-                        <FontAwesome size={20} name="cog"/>
+                        <FontAwesome style={{backgroundColor: '#f2f2f2', padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} onPress={() => {this.modyfyActivity(key, activity)}} size={20} name="cog"/>
+                        <FontAwesome style={{backgroundColor: '#f44242', color: "#fff", padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} onPress={() => {this.deleteActivity(key)}} size={20} name="trash"/>
                     </View>
                 ))
             }
@@ -69,6 +68,7 @@ export default class Activities extends React.Component {
                 <View key={key}>
                     <Text>{key + 1}. seria</Text>
                     <TextInput style={styles.input} value={serie.toString()} onChangeText={(e) => {this.handleSerieChange(key, e)}} keyboardType='numeric'/>
+                    <FontAwesome style={{backgroundColor: '#f44242', color: "#fff", padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} onPress={() => {this.deleteSingleSerie(key)}} size={20} name="trash"/>
                 </View>
             ));
             return (
@@ -76,9 +76,9 @@ export default class Activities extends React.Component {
                 <ScrollView>
                     <View style={{padding: 10}}>
                         <Text style={styles.header}>Nazwa ćwiczenia</Text>
-                        <TextInput style={styles.input} onChangeText={(e) => {this.handleTitleChange(e)}}/>
+                        <TextInput value={this.state.new_activity.title} style={styles.input} onChangeText={(e) => {this.handleTitleChange(e)}}/>
                         <Text style={styles.header}>Czas pomiędzy seriami</Text>
-                        <TextInput style={styles.input} onChangeText={(e) => {this.handleBreakTimeCHange(e)}}/>
+                        <TextInput value={this.state.new_activity.break_time.toString()} style={styles.input} onChangeText={(e) => {this.handleBreakTimeCHange(e)}}/>
                         <Text style={styles.header}>Dni tygodnia</Text>
                         <CheckBox title='Poniedziałek' checked={this.state.new_activity.days[0]} onPress={() => {this.handleCheckDay(0)}}/>
                         <CheckBox title='Wtorek' checked={this.state.new_activity.days[1]} onPress={() => {this.handleCheckDay(1)}}/>
@@ -91,7 +91,7 @@ export default class Activities extends React.Component {
                         {series}
                         <Button title="Dodaj serię" onPress={() => { this.addNewSerie() }}/>
                     </View>
-                    <Button title='Dodaj ćwiczenie' onPress={() => { this.submitNewActivity() }}/>
+                    <Button title='Zapisz' onPress={() => { this.submitActivity() }}/>
                 </ScrollView>
             </Modal>);
         }
@@ -119,7 +119,8 @@ export default class Activities extends React.Component {
     addNewActivity(position) {
         if(position === 0) {
             this.setState({
-                page: Page.NEW_ACTIVITY
+                page: Page.NEW_ACTIVITY,
+                is_modyfied: false
             });
         }
     }
@@ -164,8 +165,17 @@ export default class Activities extends React.Component {
         });
     }
 
-    async submitNewActivity() {
-        let newActivity = {
+    deleteSingleSerie(id) {
+        let modyfiedActivity = this.state.new_activity;
+        modyfiedActivity.series.splice(id, 1);
+
+        this.setState({
+            new_activity: modyfiedActivity
+        });
+    }
+
+    async submitActivity() {
+        let activity = {
             title: this.state.new_activity.title,
             break_time: this.state.new_activity.break_time,
             days: this.state.new_activity.days,
@@ -174,13 +184,38 @@ export default class Activities extends React.Component {
         }
 
         let newActivities = this.state.activities;
-        newActivities.push(newActivity);
+
+        if(this.state.is_modyfied === false) {
+            newActivities.push(newActivity);
+        } else {
+            newActivities[this.state.modyfied_id] = activity;
+        }
 
         await AsyncStorage.setItem('activities', JSON.stringify(newActivities));
 
         this.setState({
             activities: newActivities,
             page: Page.ACTIVITIES
+        });
+    }
+
+    async deleteActivity(id) {
+        let allActivities = await AsyncStorage.getItem('activities');
+        allActivities = JSON.parse(allActivities);
+        allActivities.splice(id, 1);
+        await AsyncStorage.setItem('activities', JSON.stringify(allActivities));
+
+        this.setState({
+            activities: allActivities
+        });
+    }
+
+    modyfyActivity(id, activity) {
+        this.setState({
+            page: Page.NEW_ACTIVITY,
+            new_activity: activity,
+            is_modyfied: true,
+            modyfied_id: id
         });
     }
 }
