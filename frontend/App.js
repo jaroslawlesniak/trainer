@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ToolbarAndroid, StyleSheet, StatusBar } from 'react-native';
 import Page from './libs/page';
 
-import { createDrawerNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
 
 import Homepage from './components/homepage';
 import Configure from './components/configure';
@@ -12,19 +12,24 @@ import Training from './components/training';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#000',
         flex: 1
     }
 });
 
-const AppDrawerNavigator = createDrawerNavigator(
-    {
-        Homepage,
-        Activities
-    },{
-        contentComponent: NavigationComponent
+const AppDrawerNavigator = createBottomTabNavigator({
+    homepage: { screen: Homepage, icon: 'album' },
+    activities: { screen: Activities }
+}, {
+    tabBarOptions: {
+        activeTintColor: '#fff',
+        inactiveTintColor: '#646b73',
+        style: {
+            backgroundColor: '#000',
+            padding: 15
+        }
     }
-    );
+});
 
 const AppContainer = createAppContainer(AppDrawerNavigator);
 
@@ -32,8 +37,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
 
-        StatusBar.setBackgroundColor('#f2f2f2');
-        StatusBar.setBarStyle('dark-content');
+        StatusBar.setBackgroundColor('#000');
+        StatusBar.setBarStyle('light-content');
 
         this.state = {
             page: 0,
@@ -42,21 +47,6 @@ export default class App extends React.Component {
     }
  
     render() {
-        let content;
-
-        switch(this.state.page) {
-            case Page.HOMEPAGE: {
-                content = (<Homepage/>);
-            }
-        }
-
-        // if(this.state.page === 0) {
-        //     content = (<Configure onConfigure={ this.startTraining }/>);
-        // }
-        // if(this.state.page === 1) {
-        //     content = <Training data={ this.state.data } finishTraining={ this.finishTraining }/>
-        // }
-
         return (
             <AppContainer/>
         );

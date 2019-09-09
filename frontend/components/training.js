@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-nativ
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 15,
         flex: 1,
         display: "flex",
         alignItems: "stretch",
         flexDirection: "column",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        backgroundColor: "#000"
     },
     view: {
         display: "flex",
@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
         padding: 0
     },
     header: {
-        color: "#333",
+        color: "#fff",
         fontSize: 25,
         marginBottom: 15
     },
     text: {
-        color: "#666"
+        color: "#646b73"
     },
     submit_button: {
         backgroundColor: "#FFBD1B",
@@ -61,8 +61,8 @@ class Training extends React.Component {
     constructor(props) {
         super(props);
 
-        StatusBar.setBackgroundColor('#f2f2f2');
-        StatusBar.setBarStyle('dark-content');
+        StatusBar.setBackgroundColor('#000');
+        StatusBar.setBarStyle('light-content');
 
         this.state = {
             name: this.props.data.title,

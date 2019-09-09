@@ -6,21 +6,24 @@ import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { CheckBox, Button } from 'react-native-elements';
 
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        backgroundColor: "#000"
+    },
     item: {
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'baseline',
-        borderBottomColor: '#eee',
-        borderBottomWidth: 1,
         padding: 15
     },
     header: {
-
+        color: "#fff"
     },
     input: {
         padding: 5,
-        backgroundColor: '#f2f2f2',
-        borderRadius: 10
+        backgroundColor: '#646b73',
+        borderRadius: 10,
+        color: '#fff'
     }
 });
 
@@ -57,8 +60,10 @@ export default class Activities extends React.Component {
                 content = this.state.activities.map((activity, key) => (
                     <View key={key} style={styles.item}>
                         <Text style={{ fontSize: 20, color: '#666' }}>{activity.title}</Text>
-                        <FontAwesome style={{backgroundColor: '#f2f2f2', padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} onPress={() => {this.modyfyActivity(key, activity)}} size={20} name="cog"/>
-                        <FontAwesome style={{backgroundColor: '#f44242', color: "#fff", padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} onPress={() => {this.deleteActivity(key)}} size={20} name="trash"/>
+                        <View style={{ flexDirection: 'row' }}>
+                            <FontAwesome style={{color: '#f2f2f2', marginRight: 25 }} onPress={() => {this.modyfyActivity(key, activity)}} size={20} name="cog"/>
+                            <FontAwesome style={{color: '#f44242' }} onPress={() => {this.deleteActivity(key)}} size={20} name="trash"/>
+                        </View>
                     </View>
                 ))
             }
@@ -66,15 +71,15 @@ export default class Activities extends React.Component {
         if(this.state.page === Page.NEW_ACTIVITY) {
             series = this.state.new_activity.series.map((serie, key) => (
                 <View key={key}>
-                    <Text>{key + 1}. seria</Text>
+                    <Text style={{ color: '#fff' }}>{key + 1}. seria</Text>
                     <TextInput style={styles.input} value={serie.toString()} onChangeText={(e) => {this.handleSerieChange(key, e)}} keyboardType='numeric'/>
                     <FontAwesome style={{backgroundColor: '#f44242', color: "#fff", padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} onPress={() => {this.deleteSingleSerie(key)}} size={20} name="trash"/>
                 </View>
             ));
             return (
             <Modal animationType="fade" transparent={false} onRequestClose={() => {this.setState({page: Page.ACTIVITIES})}}>
-                <ScrollView>
-                    <View style={{padding: 10}}>
+                <ScrollView style={{ backgroundColor: '#000' }}>
+                    <View style={{padding: 10 }}>
                         <Text style={styles.header}>Nazwa ćwiczenia</Text>
                         <TextInput value={this.state.new_activity.title} style={styles.input} onChangeText={(e) => {this.handleTitleChange(e)}}/>
                         <Text style={styles.header}>Czas pomiędzy seriami</Text>
@@ -97,8 +102,8 @@ export default class Activities extends React.Component {
         }
 
         return (
-            <View>
-                <ToolbarAndroid title='Ćwiczenia' style={{ height: 55 }}
+            <View style={ styles.page }>
+                <ToolbarAndroid titleColor="#fff" title='Ćwiczenia' style={{ height: 55 }}
                 actions={[{title:"Dodaj ćwiczenie", show:'never'}]}
                 onActionSelected={ (e) => { this.addNewActivity(e) }}/>
                 {content}

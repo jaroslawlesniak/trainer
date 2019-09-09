@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "stretch",
         flexDirection: "column",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        backgroundColor: '#000'
     },
     view: {
         display: "flex",

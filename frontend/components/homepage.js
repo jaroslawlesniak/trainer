@@ -1,41 +1,42 @@
 import React from 'react';
-import { View, Text, AsyncStorage, StyleSheet, ToolbarAndroid, Modal } from 'react-native';
+import { View, Text, AsyncStorage, StyleSheet, ToolbarAndroid, Modal, TouchableOpacity } from 'react-native';
 import { FontAwesome, Ionicons  } from '@expo/vector-icons';
 import Page from '../libs/page';
 import Training from './training';
 
 const styles = StyleSheet.create({
+    page: {
+        backgroundColor: "#000",
+        flex: 1
+    },
     iconInfo: {
         textAlign: 'center'
     },
     infoText: {
         textAlign: 'center',
         fontSize: 16,
-        color: '#333',
+        color: '#fff',
         marginTop: 10
     },
     container: {
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'baseline',
-        borderBottomColor: '#eee',
-        borderBottomWidth: 1,
         padding: 15
     },
     activity: {
-        color: '#666',
+        color: '#646b73',
         fontSize: 20
     },
     completedActivity: {
-        // backgroundColor: '#11a36c',
-        color: '#11a36c'
+        color: '#fff'
     }
 });
 
 export default class Homepage extends React.Component {
     static navigationOptions = {
-        title: "Dzisiejsze ćwiczenia",
-        drawerIcon: (<Ionicons name='md-calendar' size={18}/>)
+        title: "Dziś",
+        tabBarIcon: () => <Ionicons name='md-calendar'/>
     }
 
     constructor(props) {
@@ -81,16 +82,14 @@ export default class Homepage extends React.Component {
                     {
                         if(activity.last_complete_day !== current_date) {
                             return (
-                                <View key={key} style={styles.container}>
+                                <TouchableOpacity key={key} style={styles.container} onPress={() => {this.setState({
+                                        page: Page.SINGLE_ACTIVITY,
+                                        activity,
+                                        key
+                                    });
+                                }}>
                                     <Text style={styles.activity}>{activity.title}</Text>
-                                    <FontAwesome style={{backgroundColor: '#f2f2f2', padding: 10, width: 40, textAlign: 'center', borderRadius: 100}} name='angle-right' size={20} color='#000' onPress={() => { 
-                                        this.setState({
-                                            page: Page.SINGLE_ACTIVITY,
-                                            activity,
-                                            key
-                                        });
-                                    }}/>
-                                </View>
+                                </TouchableOpacity>
                             );
                         } else {
                             return (
@@ -112,8 +111,8 @@ export default class Homepage extends React.Component {
         }
 
         return (
-            <View>
-                <ToolbarAndroid color="#fff" title="Dzisiejsze ćwiczenia" style={{ height: 55 }}/>
+            <View style={ styles.page }>
+                <ToolbarAndroid titleColor="#fff" title="Dzisiejsze ćwiczenia" style={{ height: 55, marginBottom: 25 }}/>
                 {content}
             </View>
         );
