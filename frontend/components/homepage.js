@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, AsyncStorage, StyleSheet, ToolbarAndroid, Modal, TouchableOpacity } from 'react-native';
-import { FontAwesome, Ionicons  } from '@expo/vector-icons';
+import { FontAwesome, Entypo  } from '@expo/vector-icons';
 import Page from '../libs/page';
 import Training from './training';
 
@@ -29,14 +29,14 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     completedActivity: {
-        color: '#fff'
+        color: '#646b73'
     }
 });
 
 export default class Homepage extends React.Component {
     static navigationOptions = {
-        title: "Dziś",
-        tabBarIcon: () => <Ionicons name='md-calendar'/>
+        title: '',
+        tabBarIcon: ({tintColor}) => <Entypo name='calendar' size={25} style={{ padding: 15 }} color={tintColor}/>
     }
 
     constructor(props) {
@@ -104,7 +104,7 @@ export default class Homepage extends React.Component {
             }
         } else if(this.state.page === Page.SINGLE_ACTIVITY) {
             content = (
-                <Modal animationType="fade" transparent={false} onRequestClose={() => {this.setState({page: Page.HOMEPAGE})}}>
+                <Modal animationType="slide" transparent={false} onRequestClose={() => {this.setState({page: Page.HOMEPAGE})}}>
                     <Training data={this.state.activity} activity_key={this.state.key} finishTraining={(e) => { this.finishTraining(e) }}/>
                 </Modal>
             );

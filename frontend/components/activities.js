@@ -1,9 +1,9 @@
 import React from 'react';
-import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
-import { Modal, View, AsyncStorage, Text, StyleSheet, ToolbarAndroid } from 'react-native';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Modal, CheckBox, View, AsyncStorage, Text, StyleSheet, ToolbarAndroid } from 'react-native';
 import Page from '../libs/page';
-import { TextInput, ScrollView } from 'react-native-gesture-handler';
-import { CheckBox, Button } from 'react-native-elements';
+import { TextInput, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { Button } from 'react-native-elements';
 
 const styles = StyleSheet.create({
     page: {
@@ -17,20 +17,27 @@ const styles = StyleSheet.create({
         padding: 15
     },
     header: {
-        color: "#fff"
+        color: "#fff",
+        marginTop: 25,
+        marginBottom: 10
     },
     input: {
-        padding: 5,
-        backgroundColor: '#646b73',
-        borderRadius: 10,
+        padding: 10,
+        paddingLeft: 15,
+        paddingRight: 15,
+        backgroundColor: '#333',
+        borderRadius: 100,
+        color: '#aaa'
+    },
+    checkbox: {
         color: '#fff'
     }
 });
 
 export default class Activities extends React.Component {
     static navigationOptions = {
-        title: "Ćwiczenia",
-        drawerIcon: (<MaterialCommunityIcons name='dumbbell' size={18}/>)
+        title: '',
+        tabBarIcon: ({tintColor}) => <MaterialCommunityIcons name='dumbbell' size={25} color={tintColor}/>
     }
 
     constructor(props) {
@@ -58,13 +65,9 @@ export default class Activities extends React.Component {
         if(this.state.page === Page.ACTIVITIES) {
             if(this.state.activities.length !== 0) {
                 content = this.state.activities.map((activity, key) => (
-                    <View key={key} style={styles.item}>
-                        <Text style={{ fontSize: 20, color: '#666' }}>{activity.title}</Text>
-                        <View style={{ flexDirection: 'row' }}>
-                            <FontAwesome style={{color: '#f2f2f2', marginRight: 25 }} onPress={() => {this.modyfyActivity(key, activity)}} size={20} name="cog"/>
-                            <FontAwesome style={{color: '#f44242' }} onPress={() => {this.deleteActivity(key)}} size={20} name="trash"/>
-                        </View>
-                    </View>
+                    <TouchableOpacity key={key} style={styles.item} onPress={() => { this.modyfyActivity(key, activity) }}>
+                        <Text style={{ fontSize: 20, color: '#646b73' }}>{activity.title}</Text>
+                    </TouchableOpacity>
                 ))
             }
         }
@@ -77,21 +80,22 @@ export default class Activities extends React.Component {
                 </View>
             ));
             return (
-            <Modal animationType="fade" transparent={false} onRequestClose={() => {this.setState({page: Page.ACTIVITIES})}}>
+            <Modal animationType="slide" transparent={false} onRequestClose={() => {this.setState({page: Page.ACTIVITIES})}}>
                 <ScrollView style={{ backgroundColor: '#000' }}>
+                    <ToolbarAndroid title='Konfiguracja ćwiczenia' titleColor="#fff" style={{ height: 55 }}/>
                     <View style={{padding: 10 }}>
                         <Text style={styles.header}>Nazwa ćwiczenia</Text>
                         <TextInput value={this.state.new_activity.title} style={styles.input} onChangeText={(e) => {this.handleTitleChange(e)}}/>
                         <Text style={styles.header}>Czas pomiędzy seriami</Text>
-                        <TextInput value={this.state.new_activity.break_time.toString()} style={styles.input} onChangeText={(e) => {this.handleBreakTimeCHange(e)}}/>
+                        <TextInput value={this.state.new_activity.break_time.toString()} style={styles.input} onChangeText={(e) => {this.handleBreakTimeChange(e)}}/>
                         <Text style={styles.header}>Dni tygodnia</Text>
-                        <CheckBox title='Poniedziałek' checked={this.state.new_activity.days[0]} onPress={() => {this.handleCheckDay(0)}}/>
-                        <CheckBox title='Wtorek' checked={this.state.new_activity.days[1]} onPress={() => {this.handleCheckDay(1)}}/>
-                        <CheckBox title='Środa' checked={this.state.new_activity.days[2]} onPress={() => {this.handleCheckDay(2)}}/>
-                        <CheckBox title='Czwartek' checked={this.state.new_activity.days[3]} onPress={() => {this.handleCheckDay(3)}}/>
-                        <CheckBox title='Piątek' checked={this.state.new_activity.days[4]} onPress={() => {this.handleCheckDay(4)}}/>
-                        <CheckBox title='Sobota' checked={this.state.new_activity.days[5]} onPress={() => {this.handleCheckDay(5)}}/>
-                        <CheckBox title='Niedziela' checked={this.state.new_activity.days[6]} onPress={() => {this.handleCheckDay(6)}}/> 
+                        <TouchableOpacity style={{ flexDirection: 'row' }}><CheckBox onValueChange={() => {this.handleCheckDay(0)}} value={this.state.new_activity.days[0]} /><Text onPress={() => {this.handleCheckDay(0)}} style={{ color: '#fff' }}>Poniedziałek</Text></TouchableOpacity>
+                        <TouchableOpacity style={{ flexDirection: 'row' }}><CheckBox onValueChange={() => {this.handleCheckDay(1)}} value={this.state.new_activity.days[1]} /><Text style={{ color: '#fff' }}>Wtorek</Text></TouchableOpacity>
+                        <TouchableOpacity style={{ flexDirection: 'row' }}><CheckBox onValueChange={() => {this.handleCheckDay(2)}} value={this.state.new_activity.days[2]} /><Text style={{ color: '#fff' }}>Środa</Text></TouchableOpacity>
+                        <TouchableOpacity style={{ flexDirection: 'row' }}><CheckBox onValueChange={() => {this.handleCheckDay(3)}} value={this.state.new_activity.days[3]} /><Text style={{ color: '#fff' }}>Czwartek</Text></TouchableOpacity>
+                        <TouchableOpacity style={{ flexDirection: 'row' }}><CheckBox onValueChange={() => {this.handleCheckDay(4)}} value={this.state.new_activity.days[4]} /><Text style={{ color: '#fff' }}>Piątek</Text></TouchableOpacity>
+                        <TouchableOpacity style={{ flexDirection: 'row' }}><CheckBox onValueChange={() => {this.handleCheckDay(5)}} value={this.state.new_activity.days[5]} /><Text style={{ color: '#fff' }}>Sobota</Text></TouchableOpacity>
+                        <TouchableOpacity style={{ flexDirection: 'row' }}><CheckBox onValueChange={() => {this.handleCheckDay(6)}} value={this.state.new_activity.days[6]} /><Text style={{ color: '#fff' }}>Niedziela</Text></TouchableOpacity>
                         <Text style={styles.header}>Powtórzenia w serii</Text>
                         {series}
                         <Button title="Dodaj serię" onPress={() => { this.addNewSerie() }}/>
@@ -103,7 +107,7 @@ export default class Activities extends React.Component {
 
         return (
             <View style={ styles.page }>
-                <ToolbarAndroid titleColor="#fff" title='Ćwiczenia' style={{ height: 55 }}
+                <ToolbarAndroid titleColor="#fff" title='Ćwiczenia' style={{ height: 55, marginBottom: 25 }}
                 actions={[{title:"Dodaj ćwiczenie", show:'never'}]}
                 onActionSelected={ (e) => { this.addNewActivity(e) }}/>
                 {content}
@@ -138,7 +142,7 @@ export default class Activities extends React.Component {
         });
     }
 
-    handleBreakTimeCHange(time) {
+    handleBreakTimeChange(time) {
         let modyfiedActivity = this.state.new_activity;
         modyfiedActivity.break_time = time;
         this.setState({

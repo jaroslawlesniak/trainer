@@ -5,10 +5,8 @@ import Page from './libs/page';
 import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
 
 import Homepage from './components/homepage';
-import Configure from './components/configure';
-import NavigationComponent from './components/navigation';
 import Activities from './components/activities';
-import Training from './components/training';
+import Stats from './components/stats';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,15 +16,15 @@ const styles = StyleSheet.create({
 });
 
 const AppDrawerNavigator = createBottomTabNavigator({
-    homepage: { screen: Homepage, icon: 'album' },
-    activities: { screen: Activities }
+    Homepage,
+    Activities,
+    Stats
 }, {
     tabBarOptions: {
         activeTintColor: '#fff',
         inactiveTintColor: '#646b73',
         style: {
-            backgroundColor: '#000',
-            padding: 15
+            backgroundColor: '#000'
         }
     }
 });
